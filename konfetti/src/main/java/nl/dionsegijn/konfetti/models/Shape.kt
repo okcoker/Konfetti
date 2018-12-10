@@ -8,5 +8,11 @@ package nl.dionsegijn.konfetti.models
  */
 enum class Shape {
     RECT(),
-    CIRCLE()
+    CIRCLE(),
+    CUSTOM1(),
+    CUSTOM2(),
+    CUSTOM3(),
+    CUSTOM4(),
+    CUSTOM5(),
+    CUSTOM6(),
 }

@@ -1,6 +1,9 @@
 package nl.dionsegijn.konfetti
 
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
 import nl.dionsegijn.konfetti.emitters.BurstEmitter
 import nl.dionsegijn.konfetti.emitters.Emitter
 import nl.dionsegijn.konfetti.emitters.RenderSystem
@@ -28,6 +31,7 @@ class ParticleSystem(private val konfettiView: KonfettiView) {
     private var sizes = arrayOf(Size(16))
     private var shapes = arrayOf(Shape.RECT)
     private var confettiConfig = ConfettiConfig()
+    private var customShapeCallback: ((Shape, Canvas, RectF, Paint) -> Unit)? = null
 
     /**
      * Implementation of [BurstEmitter] or [StreamEmitter]
@@ -93,6 +97,15 @@ class ParticleSystem(private val konfettiView: KonfettiView) {
         this.shapes = shapes.filterIsInstance<Shape>().toTypedArray()
         return this
     }
+
+    /**
+     * Callback to be called whenever a custom variant of [Shape] is expected to be drawn
+     */
+    fun setCustomShapeCallback(callback: (shape: Shape,  canvas: Canvas, rectF: RectF, paint: Paint) -> Unit): ParticleSystem {
+        this.customShapeCallback = callback
+        return this
+    }
+
 
     /**
      * Set direction you want to have the particles shoot to
@@ -230,7 +243,7 @@ class ParticleSystem(private val konfettiView: KonfettiView) {
      * By calling this function the system will start rendering confetti
      */
     private fun startRenderSystem(emitter: Emitter) {
-        renderSystem = RenderSystem(location, velocity, sizes, shapes, colors, confettiConfig, emitter)
+        renderSystem = RenderSystem(location, velocity, sizes, shapes, customShapeCallback, colors, confettiConfig, emitter)
         start()
     }
 

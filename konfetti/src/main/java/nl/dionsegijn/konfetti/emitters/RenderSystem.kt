@@ -1,6 +1,8 @@
 package nl.dionsegijn.konfetti.emitters
 
 import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.RectF
 import nl.dionsegijn.konfetti.Confetti
 import nl.dionsegijn.konfetti.models.ConfettiConfig
 import nl.dionsegijn.konfetti.models.Shape
@@ -21,6 +23,7 @@ class RenderSystem(
     private val velocity: VelocityModule,
     private val sizes: Array<Size>,
     private val shapes: Array<Shape>,
+    private val customShapeCallback: ((Shape, Canvas, RectF, Paint) -> Unit)?,
     private val colors: IntArray,
     private val config: ConfettiConfig,
     private val emitter: Emitter
@@ -42,6 +45,7 @@ class RenderSystem(
                 color = colors[random.nextInt(colors.size)],
                 lifespan = config.timeToLive,
                 fadeOut = config.fadeOut,
+                customShapeCallback = customShapeCallback,
                 velocity = this.velocity.getVelocity())
         )
     }

@@ -14,6 +14,7 @@ class Confetti(
     val color: Int,
     val size: Size,
     val shape: Shape,
+    val customShapeCallback: ((Shape, Canvas, RectF, Paint) -> Unit)?,
     var lifespan: Long = -1L,
     val fadeOut: Boolean = true,
     private var acceleration: Vector = Vector(0f, 0f),
@@ -115,6 +116,12 @@ class Confetti(
         when (shape) {
             Shape.CIRCLE -> canvas.drawOval(rectF, paint)
             Shape.RECT -> canvas.drawRect(rectF, paint)
+            Shape.CUSTOM1,
+            Shape.CUSTOM2,
+            Shape.CUSTOM3,
+            Shape.CUSTOM4,
+            Shape.CUSTOM5,
+            Shape.CUSTOM6 -> customShapeCallback?.invoke(shape, canvas, rectF, paint)
         }
         canvas.restore()
     }
