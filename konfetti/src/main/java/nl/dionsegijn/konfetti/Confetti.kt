@@ -14,6 +14,7 @@ class Confetti(
     val color: Int,
     val size: Size,
     val shape: Shape,
+    val setColorCallback: ((Shape) -> Int)?,
     val customShapeCallback: ((Shape, Canvas, RectF, Paint) -> Unit)?,
     var lifespan: Long = -1L,
     val fadeOut: Boolean = true,
@@ -40,6 +41,10 @@ class Confetti(
         val maxRotationSpeed = minRotationSpeed * 3
         rotationSpeed = maxRotationSpeed * Random().nextFloat() + minRotationSpeed
         paint.color = color
+
+        setColorCallback?.let {
+            paint.color = it.invoke(shape)
+        }
     }
 
     private fun getSize(): Float = width

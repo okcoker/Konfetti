@@ -25,6 +25,7 @@ class RenderSystem(
     private val shapes: Array<Shape>,
     private val customShapeCallback: ((Shape, Canvas, RectF, Paint) -> Unit)?,
     private val colors: IntArray,
+    private val setColorCallback: ((Shape) -> Int)?,
     private val config: ConfettiConfig,
     private val emitter: Emitter
 ) {
@@ -46,6 +47,7 @@ class RenderSystem(
                 lifespan = config.timeToLive,
                 fadeOut = config.fadeOut,
                 customShapeCallback = customShapeCallback,
+                setColorCallback = setColorCallback,
                 velocity = this.velocity.getVelocity())
         )
     }

@@ -32,6 +32,7 @@ class ParticleSystem(private val konfettiView: KonfettiView) {
     private var shapes = arrayOf(Shape.RECT)
     private var confettiConfig = ConfettiConfig()
     private var customShapeCallback: ((Shape, Canvas, RectF, Paint) -> Unit)? = null
+    private var setColorCallback: ((Shape) -> Int)? = null
 
     /**
      * Implementation of [BurstEmitter] or [StreamEmitter]
@@ -78,6 +79,15 @@ class ParticleSystem(private val konfettiView: KonfettiView) {
      */
     fun addColors(colors: List<Int>): ParticleSystem {
         this.colors = colors.toIntArray()
+        return this
+    }
+
+
+    /**
+     * Callback to be called whenever a custom variant of [Shape] is expected to be drawn
+     */
+    fun setColorForShapeCallback(callback: (shape: Shape) -> Int): ParticleSystem {
+        this.setColorCallback = callback
         return this
     }
 
@@ -243,7 +253,7 @@ class ParticleSystem(private val konfettiView: KonfettiView) {
      * By calling this function the system will start rendering confetti
      */
     private fun startRenderSystem(emitter: Emitter) {
-        renderSystem = RenderSystem(location, velocity, sizes, shapes, customShapeCallback, colors, confettiConfig, emitter)
+        renderSystem = RenderSystem(location, velocity, sizes, shapes, customShapeCallback, colors, setColorCallback, confettiConfig, emitter)
         start()
     }
 
